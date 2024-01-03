@@ -55,3 +55,4 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_123AB48779AB47D589E86C5E4028FCE8 }}
+          mongodb-uri: ${{ secrets.MONGODB_URI }}
