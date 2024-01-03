@@ -1,0 +1,6 @@
+@handy_tarifvergleich_server_HostAddress = http://localhost:5064
+
+GET {{handy_tarifvergleich_server_HostAddress}}/user/
+Accept: application/json
+
+###
