@@ -1,0 +1,6 @@
+[Oo]bj/
+[Bb]in/
+.git/
+.idea/
+.vs/
+*.user
