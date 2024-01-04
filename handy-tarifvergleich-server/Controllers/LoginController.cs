@@ -92,6 +92,7 @@ namespace handy_tarifvergleich_server.Controllers
                 claims: new[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
+                    new Claim("UserId", user.UserId.ToString()),
                     new Claim(ClaimTypes.Role, user.Role),
                 },
                 expires: DateTime.Now.AddHours(1),
