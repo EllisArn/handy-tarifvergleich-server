@@ -71,7 +71,7 @@ namespace handy_tarifvergleich_server.Controllers
         }
 
         [HttpPut]
-        [Route("update/{offerId}")]
+        [Route("update")]
         [Authorize(Roles = "Admin")]
         public IActionResult UpdateOffer(int offerId, OfferDto request)
         {
@@ -104,7 +104,7 @@ namespace handy_tarifvergleich_server.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{offerId}")]
+        [Route("delete")]
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteOffer(int offerId)
         {
