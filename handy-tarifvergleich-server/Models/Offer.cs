@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 
 namespace handy_tarifvergleich_server.Models
 {
@@ -10,10 +9,10 @@ namespace handy_tarifvergleich_server.Models
         public string Name { get; set; }
         public string Provider { get; set; }
         public string OfferURL { get; set; }
-        public double BasePrice { get; set; }
+        public decimal BasePrice { get; set; }
         public bool WorldOffer { get; set; }
         public OfferCost Cost { get; set; }
         public OfferDeductions Deductions { get; set; }
-        public int ActivationFee { get; set; }
+        public decimal ActivationFee { get; set; }
     }
 }

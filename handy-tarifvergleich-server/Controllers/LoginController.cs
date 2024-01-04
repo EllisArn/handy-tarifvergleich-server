@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using handy_tarifvergleich_server.models;
+﻿using handy_tarifvergleich_server.models;
 using handy_tarifvergleich_server.models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -98,7 +97,6 @@ namespace handy_tarifvergleich_server.Controllers
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: credentials
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

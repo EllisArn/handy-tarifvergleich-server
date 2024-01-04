@@ -32,6 +32,19 @@ namespace handy_tarifvergleich_server.Controllers
             var filter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
             var user = _usersCollection.Find(filter).FirstOrDefault();
             if (user == null) return BadRequest("Benutzer nicht gefunden");
+            user.Remove("_id");
+
+            return Ok(user.ToJson());
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetUser(int userId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
+            var user = _usersCollection.Find(filter).FirstOrDefault();
+            if (user == null) return BadRequest("Benutzer nicht gefunden");
+            user.Remove("_id");
 
             return Ok(user.ToJson());
         }

@@ -2,11 +2,11 @@
 {
     public class OfferCostDto
     {
-        public double CallPerCallminuteCH { get; set; }
-        public double InternetPerGBCH { get; set; }
-        public double SMSPerCountCH { get; set; }
-        public double CallPerCallminuteEurope { get; set; }
-        public double InternetPerGBEurope { get; set; }
-        public double SMSPerCountEurope { get; set; }
+        public decimal CallPerCallminuteCH { get; set; }
+        public decimal InternetPerGBCH { get; set; }
+        public decimal SMSPerCountCH { get; set; }
+        public decimal CallPerCallminuteEurope { get; set; }
+        public decimal InternetPerGBEurope { get; set; }
+        public decimal SMSPerCountEurope { get; set; }
     }
 }

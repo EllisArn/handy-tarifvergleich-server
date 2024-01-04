@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
-using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 

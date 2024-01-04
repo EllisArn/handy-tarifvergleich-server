@@ -25,7 +25,76 @@ namespace handy_tarifvergleich_server.Controllers
         [Route("all")]
         public IActionResult GetAllOffers()
         {
-            return Ok(_offersCollection.Find(new BsonDocument()).ToList().ToJson());
+            var allOffers = _offersCollection.Find(new BsonDocument()).ToList();
+            var convertedOffers = allOffers.Select(offer => new Offer
+                {
+                    OfferId = offer["OfferId"].AsInt32,
+                    Name = offer["Name"].AsString,
+                    Provider = offer["Provider"].AsString,
+                    OfferURL = offer["OfferURL"].AsString,
+                    WorldOffer = offer["WorldOffer"].AsBoolean,
+                    BasePrice = decimal.Parse(offer["BasePrice"].AsString),
+                    Cost = new OfferCost
+                    {
+                        CallPerCallminuteCH = decimal.Parse(offer["Cost"]["CallPerCallminuteCH"].AsString),
+                        InternetPerGBCH = decimal.Parse(offer["Cost"]["InternetPerGBCH"].AsString),
+                        SMSPerCountCH = decimal.Parse(offer["Cost"]["SMSPerCountCH"].AsString),
+                        CallPerCallminuteEurope = decimal.Parse(offer["Cost"]["CallPerCallminuteEurope"].AsString),
+                        InternetPerGBEurope = decimal.Parse(offer["Cost"]["InternetPerGBEurope"].AsString),
+                        SMSPerCountEurope = decimal.Parse(offer["Cost"]["SMSPerCountEurope"].AsString)
+                    },
+                    Deductions = new OfferDeductions
+                    {
+                        FreeGBInternetCH = decimal.Parse(offer["Deductions"]["FreeGBInternetCH"].AsString),
+                        FreeCallminutesCH = decimal.Parse(offer["Deductions"]["FreeCallminutesCH"].AsString),
+                        FreeSMSCH = decimal.Parse(offer["Deductions"]["FreeSMSCH"].AsString),
+                        FreeGBInternetEurope = decimal.Parse(offer["Deductions"]["FreeGBInternetEurope"].AsString),
+                        FreeCallminutesEurope = decimal.Parse(offer["Deductions"]["FreeCallminutesEurope"].AsString),
+                        FreeSMSEurope = decimal.Parse(offer["Deductions"]["FreeSMSEurope"].AsString)
+                    },
+                    ActivationFee = decimal.Parse(offer["ActivationFee"].AsString)
+                })
+                .ToList();
+
+            return Ok(convertedOffers);
+        }
+
+        [HttpGet]
+        public IActionResult GetOffer(int offerId)
+        {
+            var offer = _offersCollection.Find(offer => offer["OfferId"] == offerId).FirstOrDefault();
+            if (offer == null) return NotFound("Angebot nicht gefunden");
+
+            var offerConverted = new Offer
+            {
+                OfferId = offer["OfferId"].AsInt32,
+                Name = offer["Name"].AsString,
+                Provider = offer["Provider"].AsString,
+                OfferURL = offer["OfferURL"].AsString,
+                WorldOffer = offer["WorldOffer"].AsBoolean,
+                BasePrice = decimal.Parse(offer["BasePrice"].AsString),
+                Cost = new OfferCost
+                {
+                    CallPerCallminuteCH = decimal.Parse(offer["Cost"]["CallPerCallminuteCH"].AsString),
+                    InternetPerGBCH = decimal.Parse(offer["Cost"]["InternetPerGBCH"].AsString),
+                    SMSPerCountCH = decimal.Parse(offer["Cost"]["SMSPerCountCH"].AsString),
+                    CallPerCallminuteEurope = decimal.Parse(offer["Cost"]["CallPerCallminuteEurope"].AsString),
+                    InternetPerGBEurope = decimal.Parse(offer["Cost"]["InternetPerGBEurope"].AsString),
+                    SMSPerCountEurope = decimal.Parse(offer["Cost"]["SMSPerCountEurope"].AsString)
+                },
+                Deductions = new OfferDeductions
+                {
+                    FreeGBInternetCH = decimal.Parse(offer["Deductions"]["FreeGBInternetCH"].AsString),
+                    FreeCallminutesCH = decimal.Parse(offer["Deductions"]["FreeCallminutesCH"].AsString),
+                    FreeSMSCH = decimal.Parse(offer["Deductions"]["FreeSMSCH"].AsString),
+                    FreeGBInternetEurope = decimal.Parse(offer["Deductions"]["FreeGBInternetEurope"].AsString),
+                    FreeCallminutesEurope = decimal.Parse(offer["Deductions"]["FreeCallminutesEurope"].AsString),
+                    FreeSMSEurope = decimal.Parse(offer["Deductions"]["FreeSMSEurope"].AsString)
+                },
+                ActivationFee = decimal.Parse(offer["ActivationFee"].AsString)
+            };
+
+            return Ok(offerConverted);
         }
 
         [HttpPost]
@@ -33,7 +102,6 @@ namespace handy_tarifvergleich_server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AddOffer(OfferDto request)
         {
-            Console.WriteLine("test");
             int offerId = Convert.ToInt32(_offersCollection.Find(new BsonDocument()).ToList().Last()["OfferId"]) + 1;
             var offer = new Offer
             {
