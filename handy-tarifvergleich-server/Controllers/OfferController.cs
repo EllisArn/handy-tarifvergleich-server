@@ -31,7 +31,7 @@ namespace handy_tarifvergleich_server.Controllers
                     OfferId = offer["OfferId"].AsInt32,
                     Name = offer["Name"].AsString,
                     Provider = offer["Provider"].AsString,
-                    OfferURL = offer["OfferURL"].AsString,
+                    OfferUrl = offer["OfferUrl"].AsString,
                     WorldOffer = offer["WorldOffer"].AsBoolean,
                     BasePrice = decimal.Parse(offer["BasePrice"].AsString),
                     Cost = new OfferCost
@@ -70,7 +70,7 @@ namespace handy_tarifvergleich_server.Controllers
                 OfferId = offer["OfferId"].AsInt32,
                 Name = offer["Name"].AsString,
                 Provider = offer["Provider"].AsString,
-                OfferURL = offer["OfferURL"].AsString,
+                OfferUrl = offer["OfferUrl"].AsString,
                 WorldOffer = offer["WorldOffer"].AsBoolean,
                 BasePrice = decimal.Parse(offer["BasePrice"].AsString),
                 Cost = new OfferCost
@@ -109,7 +109,7 @@ namespace handy_tarifvergleich_server.Controllers
                 OfferId = offerId,
                 Name = request.Name,
                 Provider = request.Provider,
-                OfferURL = request.OfferURL,
+                OfferUrl = request.OfferUrl,
                 BasePrice = request.BasePrice,
                 WorldOffer = request.WorldOffer,
                 Cost = new OfferCost
@@ -149,7 +149,7 @@ namespace handy_tarifvergleich_server.Controllers
             var update = Builders<BsonDocument>.Update
                 .Set("Name", request.Name)
                 .Set("Provider", request.Provider)
-                .Set("OfferURL", request.OfferURL)
+                .Set("OfferUrl", request.OfferUrl)
                 .Set("BasePrice", request.BasePrice)
                 .Set("WorldOffer", request.WorldOffer)
                 .Set("Cost.CallPerCallminuteCH", request.Cost.CallPerCallminuteCH)
