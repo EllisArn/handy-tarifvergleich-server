@@ -99,5 +99,30 @@ namespace handy_tarifvergleich_server.Controllers
 
             return Ok("Benutzer erfolgreich gelöscht");
         }
+
+        [HttpGet]
+        [Route("isAdmin")]
+        [Authorize]
+        public IActionResult IsAdmin()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            if (userId == null) return BadRequest("Benutzer nicht gefunden");
+
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
+            var user = _usersCollection.Find(filter).FirstOrDefault();
+            if (user == null) return BadRequest("Benutzer nicht gefunden");
+
+            bool isAdmin = user["Role"] == "Admin";
+
+            return Ok(isAdmin);
+        }
+
+        [HttpGet]
+        [Route("isTokenValid")]
+        [Authorize]
+        public IActionResult IsTokenValid()
+        {
+            return Ok(true);
+        }
     }
 }
