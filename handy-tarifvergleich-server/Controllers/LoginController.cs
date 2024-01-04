@@ -36,16 +36,16 @@ namespace handy_tarifvergleich_server.Controllers
             if (existingUser != null) return BadRequest("Benutzername bereits vergeben");
 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            int userId = Convert.ToInt32(_usersCollection.Find(new BsonDocument()).ToList().Last()["UserId"]) + 1;
 
             var newUser = new User
             {
                 Id = ObjectId.GenerateNewId(),
-                UserId = Convert.ToInt32(_usersCollection.CountDocuments(new BsonDocument()))+1,
+                UserId = userId,
                 Username = request.Username,
                 PasswordHash = hashedPassword,
                 Form = new Form()
             };
-
             string jwtToken = GenerateJwtToken(newUser);
             newUser.Token = jwtToken;
 

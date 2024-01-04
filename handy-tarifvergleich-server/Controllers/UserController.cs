@@ -82,5 +82,22 @@ namespace handy_tarifvergleich_server.Controllers
 
             return Ok("Benutzer erfolgreich aktualisiert");
         }
+
+        [HttpDelete]
+        [Route("delete")]
+        [Authorize]
+        public IActionResult DeleteUser()
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            if (userId == null) return BadRequest("Benutzer nicht gefunden");
+
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
+            var user = _usersCollection.Find(filter).FirstOrDefault();
+            if (user == null) return BadRequest("Benutzer nicht gefunden");
+
+            _usersCollection.DeleteOne(filter);
+
+            return Ok("Benutzer erfolgreich gelöscht");
+        }
     }
 }

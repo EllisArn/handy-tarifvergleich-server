@@ -25,9 +25,7 @@ namespace handy_tarifvergleich_server.Controllers
         [Route("all")]
         public IActionResult GetAllOffers()
         {
-            var allOffers = _offersCollection.Find(new BsonDocument()).ToList();
-            var jsonOffers = allOffers.Select(offer => offer.ToJson()).ToList();
-            return Ok(jsonOffers);
+            return Ok(_offersCollection.Find(new BsonDocument()).ToList().ToJson());
         }
 
         [HttpPost]
@@ -35,10 +33,12 @@ namespace handy_tarifvergleich_server.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AddOffer(OfferDto request)
         {
+            Console.WriteLine("test");
+            int offerId = Convert.ToInt32(_offersCollection.Find(new BsonDocument()).ToList().Last()["OfferId"]) + 1;
             var offer = new Offer
             {
                 Id = ObjectId.GenerateNewId(),
-                OfferId = Convert.ToInt32(_offersCollection.CountDocuments(new BsonDocument())) + 1,
+                OfferId = offerId,
                 Name = request.Name,
                 Provider = request.Provider,
                 OfferURL = request.OfferURL,
