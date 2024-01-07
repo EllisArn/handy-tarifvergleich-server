@@ -148,9 +148,25 @@ namespace handy_tarifvergleich_server.Controllers
 
         [HttpGet]
         [Route("isTokenValid")]
-        [Authorize]
         public IActionResult IsTokenValid()
         {
+            var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+            var tokenFilter = Builders<BsonDocument>.Filter.Eq("Token", token);
+            var tokenBlacklistCollection = _usersCollection.Database.GetCollection<BsonDocument>("tokenBlacklist");
+            var tokenBlacklist = tokenBlacklistCollection.Find(tokenFilter).FirstOrDefault();
+            if (tokenBlacklist != null)
+            {
+                bool isTokenBlacklisted = tokenBlacklist["IsBlacklisted"].AsBoolean;
+                if (isTokenBlacklisted) return BadRequest(false);
+            }
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            if (userId == null) return BadRequest(false);
+
+            var idFilter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
+            var user = _usersCollection.Find(idFilter).FirstOrDefault();
+            if (user == null) return BadRequest(false);
+
             return Ok(true);
         }
     }
