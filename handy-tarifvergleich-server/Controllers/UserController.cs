@@ -97,7 +97,7 @@ namespace handy_tarifvergleich_server.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
+        [Route("deleteme")]
         [Authorize]
         public IActionResult DeleteUser()
         {
@@ -108,6 +108,22 @@ namespace handy_tarifvergleich_server.Controllers
             var user = _usersCollection.Find(filter).FirstOrDefault();
             if (user == null) return BadRequest("Benutzer nicht gefunden");
 
+            TokenBlacklist tokenBlacklist = new TokenBlacklist { Token = user["Token"].AsString, IsBlacklisted = true };
+            _usersCollection.DeleteOne(filter);
+
+            return Ok("Benutzer erfolgreich gelöscht");
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteUser(int userId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
+            var user = _usersCollection.Find(filter).FirstOrDefault();
+            if (user == null) return BadRequest("Benutzer nicht gefunden");
+
+            TokenBlacklist tokenBlacklist = new TokenBlacklist { Token = user["Token"].AsString, IsBlacklisted = true };
             _usersCollection.DeleteOne(filter);
 
             return Ok("Benutzer erfolgreich gelöscht");

@@ -50,7 +50,7 @@ namespace handy_tarifvergleich_server.Controllers
 
             _usersCollection.InsertOne(newUser.ToBsonDocument());
 
-            return Ok("Benutzer erfolgreich registriert");
+            return Ok(jwtToken);
         }
 
         [HttpPost("login")]
@@ -73,7 +73,7 @@ namespace handy_tarifvergleich_server.Controllers
             var update = Builders<BsonDocument>.Update.Set("Token", jwtToken);
             _usersCollection.UpdateOne(filter, update);
 
-            return Ok("Benutzer erfolgreich eingeloggt");
+            return Ok(jwtToken);
         }
 
         private string GenerateJwtToken(User user)
