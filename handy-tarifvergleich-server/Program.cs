@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://127.0.0.1:5500", "https://mobiltarifvergleich.netlify.app/")
+        corsPolicyBuilder => corsPolicyBuilder.WithOrigins("http://127.0.0.1:5500", "https://mobiltarifvergleich.netlify.app")
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
