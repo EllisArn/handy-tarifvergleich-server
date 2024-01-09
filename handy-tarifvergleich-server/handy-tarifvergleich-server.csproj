@@ -21,4 +21,12 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\ellis\OneDrive\!SchuleIMS\IDPA\Hauptprojekt\server\handy-tarifvergleich-server\handy-tarifvergleich-server\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\ellis\OneDrive\!SchuleIMS\IDPA\Hauptprojekt\server\handy-tarifvergleich-server\handy-tarifvergleich-server\.editorconfig" />
+  </ItemGroup>
+
 </Project>

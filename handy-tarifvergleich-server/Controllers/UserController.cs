@@ -108,7 +108,7 @@ namespace handy_tarifvergleich_server.Controllers
             var user = _usersCollection.Find(filter).FirstOrDefault();
             if (user == null) return BadRequest("Benutzer nicht gefunden");
 
-            TokenBlacklist tokenBlacklist = new TokenBlacklist { Token = user["Token"].AsString, IsBlacklisted = true };
+            TokenBlacklist tokenBlacklist = new() { Token = user["Token"].AsString, IsBlacklisted = true };
             _usersCollection.DeleteOne(filter);
 
             return Ok("Benutzer erfolgreich gelöscht");
@@ -122,8 +122,9 @@ namespace handy_tarifvergleich_server.Controllers
             var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
             var user = _usersCollection.Find(filter).FirstOrDefault();
             if (user == null) return BadRequest("Benutzer nicht gefunden");
-
-            TokenBlacklist tokenBlacklist = new TokenBlacklist { Token = user["Token"].AsString, IsBlacklisted = true };
+            _ = new
+            TokenBlacklist()
+            { Token = user["Token"].AsString, IsBlacklisted = true };
             _usersCollection.DeleteOne(filter);
 
             return Ok("Benutzer erfolgreich gelöscht");
@@ -150,7 +151,7 @@ namespace handy_tarifvergleich_server.Controllers
         [Route("isTokenValid")]
         public IActionResult IsTokenValid()
         {
-            var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+            var token = Request.Headers.Authorization.ToString().Split(" ")[1];
             var tokenFilter = Builders<BsonDocument>.Filter.Eq("Token", token);
             var tokenBlacklistCollection = _usersCollection.Database.GetCollection<BsonDocument>("tokenBlacklist");
             var tokenBlacklist = tokenBlacklistCollection.Find(tokenFilter).FirstOrDefault();
