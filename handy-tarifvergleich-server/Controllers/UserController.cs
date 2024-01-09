@@ -37,18 +37,6 @@ namespace handy_tarifvergleich_server.Controllers
             return Ok(user.ToJson());
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetUser(int userId)
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("UserId", userId);
-            var user = _usersCollection.Find(filter).FirstOrDefault();
-            if (user == null) return BadRequest("Benutzer nicht gefunden");
-            user.Remove("_id");
-
-            return Ok(user.ToJson());
-        }
-
         [HttpPut]
         [Route("form/update")]
         [Authorize]
@@ -94,24 +82,6 @@ namespace handy_tarifvergleich_server.Controllers
             _usersCollection.UpdateOne(filter, update);
 
             return Ok("Benutzer erfolgreich aktualisiert");
-        }
-
-        [HttpDelete]
-        [Route("deleteme")]
-        [Authorize]
-        public IActionResult DeleteUser()
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (userId == null) return BadRequest("Benutzer nicht gefunden");
-
-            var filter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
-            var user = _usersCollection.Find(filter).FirstOrDefault();
-            if (user == null) return BadRequest("Benutzer nicht gefunden");
-
-            TokenBlacklist tokenBlacklist = new() { Token = user["Token"].AsString, IsBlacklisted = true };
-            _usersCollection.DeleteOne(filter);
-
-            return Ok("Benutzer erfolgreich gelöscht");
         }
 
         [HttpDelete]
