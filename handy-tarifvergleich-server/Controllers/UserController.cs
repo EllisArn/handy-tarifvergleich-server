@@ -63,27 +63,6 @@ namespace handy_tarifvergleich_server.Controllers
             return Ok("Formular erfolgreich aktualisiert");
         }
 
-        [HttpPut]
-        [Route("update")]
-        [Authorize]
-        public IActionResult UpdateUser(UserDto request)
-        {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (userId == null) return BadRequest("Benutzer nicht gefunden");
-
-            var filter = Builders<BsonDocument>.Filter.Eq("UserId", Convert.ToInt32(userId));
-            var user = _usersCollection.Find(filter).FirstOrDefault();
-            if (user == null) return BadRequest("Benutzer nicht gefunden");
-
-            var update = Builders<BsonDocument>.Update
-                .Set("Username", request.Username)
-                .Set("PasswordHash", BCrypt.Net.BCrypt.HashPassword(request.Password));
-
-            _usersCollection.UpdateOne(filter, update);
-
-            return Ok("Benutzer erfolgreich aktualisiert");
-        }
-
         [HttpDelete]
         [Route("delete")]
         [Authorize(Roles = "Admin")]
